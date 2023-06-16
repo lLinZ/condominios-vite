@@ -3,6 +3,7 @@ import { AUTH_ACTIONS, AuthContext, USER_ACTIONS, authReducer } from './'
 import { IRole, IUser } from '../../interfaces';
 import { baseUrl } from '../../common';
 import { green } from '@mui/material/colors';
+import { createCookie, deleteCookie, getCookieValue } from '../../helpers/functions';
 
 type Props = {
     children: React.ReactNode;
@@ -24,9 +25,32 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     const [authState, dispatch] = useReducer(authReducer, initialState);
 
 
-    const userLogout = () => {
-        dispatch({ type: AUTH_ACTIONS.logout, payload: initialState });
-        return true;
+    const userLogout = async () => {
+        const url = `${baseUrl}/logout`;
+        const options = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${getCookieValue('token')}`,
+            }
+        }
+
+        try {
+            const response = await fetch(url, options)
+
+            switch (response.status) {
+                case 200:
+                    const { status, message } = await response.json();
+                    deleteCookie('token');
+                    dispatch({ type: AUTH_ACTIONS.logout, payload: initialState });
+                    return { status, message }
+                default:
+                    return { status: false, message: 'No se logro cerrar sesion' };
+            }
+        } catch (error) {
+            console.log({ error });
+            return { status: false, message: 'No se logro conectar con el servidor' };
+        }
     }
 
     const userLogin: (email: string, password: string) => Promise<{ status: boolean; user?: IUser; message: string; role?: IRole; }> = async (email, password) => {
@@ -52,6 +76,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
             switch (response.status) {
                 case 200:
                     const { status, user, message } = await response.json();
+                    createCookie('token', user.token);
                     dispatch({ type: AUTH_ACTIONS.login, payload: user });
                     return { status, user, message, role: user.role };
 

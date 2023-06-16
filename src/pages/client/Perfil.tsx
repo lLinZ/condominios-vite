@@ -14,6 +14,7 @@ import { IconButton } from '@mui/material'
 import Visibility from '@mui/icons-material/VisibilityRounded';
 import VisibilityOff from '@mui/icons-material/VisibilityOffRounded';
 import { TextFieldCustom } from '../../components/custom/TextFieldCustom'
+import { DescripcionDeVista } from '../../components/ui/content/DescripcionDeVista'
 type Props = {}
 
 
@@ -40,7 +41,8 @@ export const Perfil = (props: Props) => {
     }
     return (
         <Layout>
-            <Grid container spacing={1} sx={{ width: "90%", margin: "20px auto", minHeight: "100%", }}>
+            <DescripcionDeVista title={'Perfil de usuario'} description="Cambia tus datos, contraseña o color de tema aqui!" />
+            <Grid container spacing={1} sx={{ width: "100%", margin: "20px auto", minHeight: "100%", }}>
                 <Grid item xs={12} sx={styles.gridItem} >
                     <Box sx={styles.colorPickerContainer}>
                         <Box sx={{ display: "flex", flexFlow: "row wrap", alignItems: "center" }}>

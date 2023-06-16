@@ -39,6 +39,7 @@ export const ColorPicker: FC = () => {
         { color: amber[500] },
         { color: orange[500] },
         { color: red[500] },
+        { color: red[900] },
         { color: pink[500] },
         { color: purple[500] },
         { color: deepPurple[500] },
@@ -46,9 +47,10 @@ export const ColorPicker: FC = () => {
         { color: blue[500] },
         { color: cyan[500] },
         { color: green[500] },
+        { color: green['A700'] },
+        { color: lightGreen['A700'] },
         { color: lime['A700'] },
-        { color: lime['A700'] },
-        { color: grey[700] },
+        { color: grey[800] },
     ]
 
     return (
