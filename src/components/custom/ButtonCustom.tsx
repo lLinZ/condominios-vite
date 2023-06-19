@@ -15,8 +15,10 @@ export function ButtonCustom<C extends React.ElementType>(
         textTransform: 'none',
         p: 1.8,
         background: rest.variant && rest.variant === 'outlined' ? 'transparent' : authState.color,
+        borderColor: authState.color,
         color: theme.palette.getContrastText(rest.variant && rest.variant === 'outlined' ? '#FFF' : authState.color),
         '&:hover': {
+            borderColor: authState.color,
             background:
                 rest.variant && rest.variant
                     ? lighten(authState.color, 0.5)

@@ -47,29 +47,29 @@ export const RegistrarPago = () => {
                 {({ values, handleChange, handleSubmit }) => (
                     <Form onSubmit={handleSubmit}>
                         <Grid container spacing={1} display='flex' flexDirection='row' alignItems='center' sx={{ p: { xs: 1, sm: 0 } }}>
-                            <Grid item xs={12} sm={6} md={6} lg={4} >
+                            <Grid item xs={12} sm={6} md={6} >
                                 <SelectCustom labelId='tipo_de_moneda' label="Tipo de moneda" onChange={handleChange} name="tipo_de_moneda" value={values.tipo_de_moneda}>
                                     <MenuItem value={'0'} disabled>Seleccione una moneda</MenuItem>
                                     <MenuItem value={'Dolar'}>Dolar</MenuItem>
                                     <MenuItem value={'Bolivares'}>Bolivares</MenuItem>
                                 </SelectCustom>
                             </Grid>
-                            <Grid item xs={12} sm={6} md={6} lg={4} >
+                            <Grid item xs={12} sm={6} md={6} >
                                 <SelectCustom labelId='tipo_de_pago' label="Tipo de moneda" onChange={handleChange} name="tipo_de_pago" value={values.tipo_de_pago}>
                                     <MenuItem value={'0'} disabled>Seleccione un tipo de pago</MenuItem>
                                     <MenuItem value={'Transferencia'}>Transferencia</MenuItem>
                                     <MenuItem value={'Efectivo'}>Efectivo</MenuItem>
                                 </SelectCustom>
                             </Grid>
-                            <Grid item xs={12} sm={6} md={6} lg={4}>
+                            <Grid item xs={12} sm={6} md={6}>
                                 <TextFieldCustom onChange={handleChange} name='monto' label='Monto' value={Number(values.monto)} />
                             </Grid>
-                            <Grid item xs={12} sm={6} md={6} lg={4}>
+                            <Grid item xs={12} sm={6} md={6}>
                                 <ButtonCustom variant='outlined' type='button' startIcon={image ? <SwapHorizRoundedIcon /> : <AttachmentRounded />} onClick={attachFile}>{image ? 'Cambiar imagen' : 'Adjuntar imagen'}</ButtonCustom>
                                 <input type='file' accept="image/*" style={{ display: 'none' }} />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextFieldCustom onChange={handleChange} name='descripcion' label='Descripción' value={values.descripcion} />
+                                <TextFieldCustom multiline onChange={handleChange} name='descripcion' label='Descripción' value={values.descripcion} />
                             </Grid>
                             <Grid item xs={12}>
                                 <ButtonCustom type='submit'>Finalizar</ButtonCustom>

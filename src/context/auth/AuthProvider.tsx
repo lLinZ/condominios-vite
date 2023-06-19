@@ -83,11 +83,12 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                 case 400:
                     const { status: statusFailed, message: messageFailed } = await response.json();
                     return { status: statusFailed, message: messageFailed };
-                    break;
+                case 401:
+                    const { status: statusFailedUnauthorized } = await response.json();
+                    return { status: statusFailedUnauthorized, message: 'No se encuentra registrado' };
 
                 default:
                     return { status: false, message: 'Ocurrio un error en el servidor', response };
-                    break;
             }
         } catch (error) {
             console.error({ error });

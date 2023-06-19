@@ -12,7 +12,10 @@ export function TextFieldCustom(
         '& input': {
             fontFamily: 'Noto Sans Warang Citi',
         },
-        '& fieldset': { borderRadius: '10em', fontFamily: 'Noto Sans Warang Citi', },
+        '& fieldset': {
+            borderRadius: 10,
+            fontFamily: 'Noto Sans Warang Citi',
+        },
         '& label.Mui-focused': {
             color: authState.color,
         },
