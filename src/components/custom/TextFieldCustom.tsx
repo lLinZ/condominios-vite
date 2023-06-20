@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { AuthContext } from '../../context/auth';
+import { red } from '@mui/material/colors';
 
 export function TextFieldCustom(
     props: TextFieldProps
@@ -8,7 +9,7 @@ export function TextFieldCustom(
     const { children, ...rest } = props;
 
     const { authState } = useContext(AuthContext)
-    return <TextField fullWidth sx={{
+    return <TextField fullWidth FormHelperTextProps={{ sx: { color: red[500], fontWeight: 'bold' } }} sx={{
         '& input': {
             fontFamily: 'Noto Sans Warang Citi',
         },
@@ -27,6 +28,7 @@ export function TextFieldCustom(
                 borderColor: authState.color,
             },
         },
+
     }
     } {...rest} />;
 }

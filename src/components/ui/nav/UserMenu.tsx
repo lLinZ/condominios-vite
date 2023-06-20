@@ -1,9 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Avatar, Box, Divider, IconButton, Menu, MenuItem, Typography } from '@mui/material';
-
-import AccountCircleRounded from '@mui/icons-material/AccountCircleRounded';
-
-import { useTheme } from '@mui/material/styles';
+import { Avatar, Box, Divider, IconButton, Menu, MenuItem } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
 import ExitToApp from '@mui/icons-material/ExitToAppRounded';
@@ -25,13 +21,11 @@ export const UserMenu = () => {
         router(path)
     }
 
-    const theme = useTheme();
-
     const { authState, userLogout } = useContext(AuthContext);
 
-    const logout = () => {
-        const result = userLogout();
-        if (result) return router('/');
+    const logout = async () => {
+        const result = await userLogout();
+        if (result.status) return router('/');
     }
     return (
         <Box>

@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import { FormikHelpers, Formik, Form } from "formik";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { TypographyCustom, ButtonCustom } from "../components/custom";
@@ -13,9 +13,18 @@ const initialValues = {
 }
 type FormValues = { email: string, password: string };
 export const AuthPage = () => {
-    const { userLogin } = useContext(AuthContext)
+    const { userLogin, validateToken } = useContext(AuthContext)
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
+    const sessionValidationLoginPage = async () => {
+        const validation = await validateToken();
+        if (validation.status) {
+            navigate(validation.path ? validation.path : '/');
+        }
+    }
+    useEffect(() => {
+        sessionValidationLoginPage()
+    }, [])
     const onSubmit: (values: FormValues, formikHelpers: FormikHelpers<FormValues>) => any = async (values) => {
         if (!values.email || !values.password) {
             return false;

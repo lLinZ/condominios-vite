@@ -1,9 +1,10 @@
-import React from 'react'
+import { FC } from 'react'
+import { IPayment } from '../../../interfaces'
+import { PaymentItem } from '.';
 
-type Props = {}
-
-const PagosList = (props: Props) => {
-    return (
-        <div>PagosList</div>
-    )
+interface Props {
+    payments: IPayment[];
+}
+export const PagosList: FC<Props> = ({ payments }) => {
+    return payments && payments.map((payment) => (<PaymentItem payment={payment} key={payment.id} />))
 }

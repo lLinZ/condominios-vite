@@ -1,6 +1,7 @@
 export const AUTH_ACTIONS = {
     login: 'Auth - Login',
     logout: 'Auth - Logout',
+    validate: 'Auth - Validate',
 }
 export const USER_ACTIONS = {
     edit: 'User - Edit',
@@ -21,6 +22,9 @@ export const authReducer: Reducer = (state, action) => {
 
         case AUTH_ACTIONS.logout:
             return { ...action.payload.initialState, };
+
+        case AUTH_ACTIONS.validate:
+            return { ...action.payload };
 
         case USER_ACTIONS.edit:
             return { ...state, ...action.payload.user };

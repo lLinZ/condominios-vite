@@ -1,4 +1,4 @@
-import React, { FC, useReducer, useState } from 'react'
+import React, { FC, useReducer } from 'react'
 import { AUTH_ACTIONS, AuthContext, USER_ACTIONS, authReducer } from './'
 import { IRole, IUser } from '../../interfaces';
 import { baseUrl } from '../../common';
@@ -24,6 +24,34 @@ const initialState: IUser = {
 export const AuthProvider: FC<Props> = ({ children }) => {
     const [authState, dispatch] = useReducer(authReducer, initialState);
 
+    const validateToken = async () => {
+        const token = getCookieValue('token');
+        const url = `${baseUrl}/user/data`
+        const options = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        try {
+            const response = await fetch(url, options);
+            switch (response.status) {
+                case 200:
+                    const { user } = await response.json();
+                    dispatch({ type: AUTH_ACTIONS.validate, payload: { ...user, token, logged: true } })
+                    const path = user.role.description === 'Cliente' ? '/dashboard' : '/admin/dashboard';
+                    return { status: true, message: 'Sesion validada', user, path }
+                default:
+                    deleteCookie('token');
+                    return { status: false, message: 'Token caducado', }
+            }
+        } catch (error) {
+            console.log({ error })
+            deleteCookie('token');
+            return { status: false, message: 'No se logro conectar al servidor, inicie sesion nuevamente', }
+        }
+    }
 
     const userLogout = async () => {
         const url = `${baseUrl}/logout`;
@@ -211,7 +239,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ authState, userLogin, userLogout, changeColor, editData }}>
+        <AuthContext.Provider value={{ authState, userLogin, userLogout, validateToken, changeColor, editData }}>
             {children}
         </AuthContext.Provider>
     )
