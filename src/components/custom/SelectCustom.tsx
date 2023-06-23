@@ -1,9 +1,12 @@
 import { useContext } from 'react'
 import { AuthContext } from '../../context/auth';
-import { lighten, darken, useTheme, InputLabel, Select, SelectProps, FormControl } from '@mui/material';
+import { lighten, darken, useTheme, InputLabel, Select, SelectProps, FormControl, FormHelperText } from '@mui/material';
 
+interface CustomSelectProps extends SelectProps {
+    helpertext: string;
+}
 export function SelectCustom(
-    props: SelectProps
+    props: CustomSelectProps
 ) {
     const { children, ...rest } = props;
 
@@ -38,7 +41,7 @@ export function SelectCustom(
         },
     }
     return (
-        <FormControl fullWidth>
+        <FormControl fullWidth error={rest.error}>
             <InputLabel id={rest.labelId} sx={{
                 fontFamily: 'Noto Sans Warang Citi',
                 '&.Mui-focused': {
@@ -48,6 +51,7 @@ export function SelectCustom(
             <Select fullWidth MenuProps={paperProps} sx={selectSx} {...rest} >
                 {children}
             </Select>
+            {rest.helpertext && rest.error ? <FormHelperText>{rest.helpertext}</FormHelperText> : ''}
         </FormControl>)
 }
 
