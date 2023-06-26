@@ -1,4 +1,4 @@
-import { OptionsList } from '../../components/client/options';
+import { OptionsList } from '../../components/ui/options';
 import { Layout } from '../../components/ui';
 import { Option } from '../../interfaces';
 import { green, blue } from '@mui/material/colors';

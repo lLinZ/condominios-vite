@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { Route, Routes } from 'react-router'
-import { Condominios, Divisas, Dashboard, Edificios, GastosComunes, GastosNoComunes, Proveedores, Unidades, Usuarios } from '../../pages/admin'
+import { Condominios, Divisas, Dashboard, Edificios, GastosComunes, GastosNoComunes, Proveedores, Unidades, Usuarios, Gastos } from '../../pages/admin'
 import { AuthContext } from '../../context/auth'
 import { Navigate, useNavigate } from 'react-router-dom'
 
@@ -19,6 +19,7 @@ export const AdminRoutes = () => {
                 <Route path='/admin/dashboard' element={<Dashboard />} />
                 <Route path='/admin/divisas' element={<Divisas />} />
                 <Route path='/admin/edificios' element={<Edificios />} />
+                <Route path='/admin/gastos' element={<Gastos />} />
                 <Route path='/admin/gastos/comunes' element={<GastosComunes />} />
                 <Route path='/admin/gastos/nocomunes' element={<GastosNoComunes />} />
                 <Route path='/admin/usuarios' element={<Usuarios />} />
@@ -30,6 +31,7 @@ export const AdminRoutes = () => {
                 <Route path='/admin/dashboard' element={<Navigate to={'/'} />} />
                 <Route path='/admin/divisas' element={<Navigate to={'/'} />} />
                 <Route path='/admin/edificios' element={<Navigate to={'/'} />} />
+                <Route path='/admin/gastos' element={<Gastos />} />
                 <Route path='/admin/gastos/comunes' element={<Navigate to={'/'} />} />
                 <Route path='/admin/gastos/nocomunes' element={<Navigate to={'/'} />} />
                 <Route path='/admin/usuarios' element={<Navigate to={'/'} />} />

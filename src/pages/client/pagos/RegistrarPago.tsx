@@ -17,15 +17,16 @@ import { baseUrl } from '../../../common';
 import { AuthContext } from '../../../context/auth';
 
 import * as Yup from 'yup';
+import { IUnit } from '../../../interfaces';
 import Swal from 'sweetalert2';
-import { IStatus, IUser } from '../../../interfaces';
+import { errorArrayLaravelTransformToString } from '../../../helpers/functions';
 
 const initialValues = {
     monto: 0,
     tipo_de_moneda: 'default',
     tipo_de_pago: 'default',
     descripcion: '',
-    unit_id: '0',
+    unit_id: 'default',
 }
 type FormValues = {
     monto: number;
@@ -42,40 +43,6 @@ const validationSchema = Yup.object({
     descripcion: Yup.string().required('Este campo es obligatorio'),
 })
 
-interface IBuilding {
-    id: number;
-    name: string;
-    units_qty: number;
-    floor_qty: number;
-    status_id: number;
-    status: IStatus;
-    created_at: string;
-    updated_at: string;
-}
-
-interface IUnitType {
-    id: number;
-    description: string;
-    size: number;
-    aliquot: number;
-    building_id: number;
-    building: IBuilding;
-    status_id: number;
-    status: IStatus;
-}
-
-interface IUnit {
-    id: number;
-    name: string;
-    user_id: number;
-    user: IUser;
-    unit_type_id: number;
-    unit_type: IUnitType;
-    building_id: number;
-    building: IBuilding;
-    created_at: string;
-    updated_at: string;
-}
 export const RegistrarPago = () => {
     const { authState } = useContext(AuthContext);
     const [image, setImage] = useState<File | null>(null);
@@ -114,14 +81,14 @@ export const RegistrarPago = () => {
 
         }
     }
-    const handleSubmitForm = async (values: FormValues) => {
+    const handleSubmitForm = async (values: FormValues, resetForm: (nextState?: any) => any) => {
         const url = `${baseUrl}/payment`;
         const formData = new FormData();
-        formData.append('monto', String(values.monto).replace(/,/g, ''));
+        formData.append('amount', Number(String(values.monto).replace(/,/g, '')).toFixed(2));
         formData.append('unit_id', values.unit_id);
-        formData.append('tipo_de_moneda', values.tipo_de_moneda);
-        formData.append('tipo_de_pago', values.tipo_de_pago);
-        formData.append('descripcion', values.descripcion);
+        formData.append('currency', values.tipo_de_moneda);
+        formData.append('payment_type', values.tipo_de_pago);
+        formData.append('description', values.descripcion);
         formData.append('image', image ? image : '');
 
         const options = {
@@ -137,14 +104,24 @@ export const RegistrarPago = () => {
 
             switch (response.status) {
                 case 200:
+                    Swal.fire({ title: 'Exito', text: 'Pago registrado', icon: 'success' });
+                    resetForm();
+                    setImage(null);
                     break;
                 case 400:
+                    const { message: messageError, errors } = await response.json();
+                    const errorString = errorArrayLaravelTransformToString(errors);
+                    Swal.fire({
+                        title: messageError,
+                        html: errorString,
+                        icon: 'error'
+                    })
                     break;
                 default:
                     break;
             }
         } catch (error) {
-
+            console.log({ error });
         }
     }
 
@@ -152,6 +129,7 @@ export const RegistrarPago = () => {
         const file = event.target.files && event.target.files[0];
         if (!file) return;
         setImage(file);
+        event.target.value = '';
     }
 
     const handleClick = () => {
@@ -163,7 +141,7 @@ export const RegistrarPago = () => {
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={handleSubmitForm}
+                onSubmit={(values, { resetForm }) => handleSubmitForm(values, resetForm)}
             >
                 {({ values, handleChange, handleSubmit, errors, touched }) => (
                     <Form onSubmit={handleSubmit}>
@@ -179,7 +157,7 @@ export const RegistrarPago = () => {
                                     value={values.unit_id}
                                 >
                                     <MenuItem value={'default'} disabled>Seleccione una de tus unidades</MenuItem>
-                                    {units && units.map((unit) => (<MenuItem key={unit.id} value={unit.id}>{unit.name}</MenuItem>))}
+                                    {units && units.map((unit) => (<MenuItem key={unit.id} value={String(unit.id)}>{unit.name}</MenuItem>))}
                                 </SelectCustom>
                             </Grid>
                             <Grid item xs={12} sm={6} md={6} >
@@ -193,7 +171,7 @@ export const RegistrarPago = () => {
                                     value={values.tipo_de_moneda}
                                 >
                                     <MenuItem value={'default'} disabled>Seleccione una moneda</MenuItem>
-                                    <MenuItem value={'Dolar'}>Dolar</MenuItem>
+                                    <MenuItem value={'Dolares'}>Dolares</MenuItem>
                                     <MenuItem value={'Bolivares'}>Bolivares</MenuItem>
                                 </SelectCustom>
                             </Grid>
@@ -202,13 +180,13 @@ export const RegistrarPago = () => {
                                     error={errors.tipo_de_pago ? true : false}
                                     helpertext={errors.tipo_de_pago ? errors.tipo_de_pago : ''}
                                     labelId='tipo_de_pago'
-                                    label='Tipo de moneda'
+                                    label='Tipo de pago'
                                     onChange={handleChange}
                                     name='tipo_de_pago'
                                     value={values.tipo_de_pago}
                                 >
                                     <MenuItem value={'default'} disabled>Seleccione un tipo de pago</MenuItem>
-                                    <MenuItem value={'Transferencia'}>Transferencia</MenuItem>
+                                    <MenuItem value={'Transferencias'}>Transferencia</MenuItem>
                                     <MenuItem value={'Efectivo'}>Efectivo</MenuItem>
                                 </SelectCustom>
                             </Grid>

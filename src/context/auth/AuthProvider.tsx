@@ -26,6 +26,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
     const validateToken = async () => {
         const token = getCookieValue('token');
+        if (!token) return { status: false, message: 'No hay token' };
         const url = `${baseUrl}/user/data`
         const options = {
             method: 'GET',
@@ -56,10 +57,10 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     const userLogout = async () => {
         const url = `${baseUrl}/logout`;
         const options = {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${getCookieValue('token')}`,
+                'Authorization': `Bearer ${authState.token}`,
             }
         }
 

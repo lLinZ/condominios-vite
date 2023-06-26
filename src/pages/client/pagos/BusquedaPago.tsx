@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, Dispatch, ChangeEvent, FormEventHandler, FormEvent } from 'react';
 
 import { Box, IconButton } from '@mui/material';
 import SearchRounded from '@mui/icons-material/SearchRounded';
@@ -9,21 +9,13 @@ import { TextFieldWithIconCustom } from '../../../components/custom';
 import { IPayment } from '../../../interfaces';
 import { PagosList } from '../../../components/client/pagos';
 import { baseUrl } from '../../../common';
+import Swal from 'sweetalert2';
 
 
 export const BusquedaPago = () => {
-
-    const [search, setSearch] = useState<string>('');
     const [payments, setPayments] = useState<IPayment[] | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-
     const { authState } = useContext(AuthContext)
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-    }
     const getActivePayments = async () => {
-        setLoading(true);
         const url = `${baseUrl}/payment`;
         const options = {
             method: 'GET',
@@ -36,11 +28,8 @@ export const BusquedaPago = () => {
             const response = await fetch(url, options);
             const data = await response.json();
             setPayments(data);
-            setLoading(false);
         } catch (error) {
             console.log({ error });
-
-            setLoading(false);
         }
     }
     useEffect(() => {
@@ -49,22 +38,66 @@ export const BusquedaPago = () => {
 
     return (
         <>
-            {loading && (<Loading />)}
-            {!loading && payments && (
+            <BusquedaYResultados records={payments} setRecords={setPayments} getInitialRecords={getActivePayments} />
+            {payments && (<PagosList payments={payments} />)}
+        </>
+
+    )
+}
+interface Props {
+    getInitialRecords: () => void;
+    records: any;
+    setRecords: Dispatch<any>;
+
+}
+const BusquedaYResultados = (props: Props) => {
+    const [search, setSearch] = useState<string>('');
+
+    useEffect(() => {
+        props.getInitialRecords();
+    }, [])
+    function searchValue(nameKey: any, myArray: any) {
+        for (let i = 0; i < myArray.length; i++) {
+            if (myArray[i].find(nameKey)) {
+                return myArray[i];
+            }
+        }
+    }
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!search) return;
+        const result: any = searchValue(search, props.records);
+        console.log({ result });
+        if (result.length > 0) {
+            setSearch('');
+            props.setRecords(result);
+        } else {
+            Swal.fire({
+                title: 'Oops...',
+                text: 'No se encontraron resultados',
+                icon: 'warning',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+            });
+        }
+    }
+    return (
+        <>
+            {props.records === 'loading' && (<Loading />)}
+            {props.records !== 'loading' && props.records && (
 
                 <Box sx={{ mt: 2, p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexFlow: 'column wrap', width: '100%' }}>
-                    <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                    <form onSubmit={(e) => handleSubmit(e)} style={{ width: '100%' }}>
                         <TextFieldWithIconCustom label='Filtrar pagos' value={search} onChange={(e) => setSearch(e.target.value)}>
                             <IconButton type='submit'>
                                 <SearchRounded sx={{ color: 'rgba(100,100,100)' }} />
                             </IconButton>
                         </TextFieldWithIconCustom>
                     </form>
-                    {!loading && payments.length === 0 && (<NoContentFound title='No se encontraron pagos' text='No hay pagos a tu nombre hasta los momentos...' />)}
-                    {payments && (<PagosList payments={payments} />)}
+                    {!props.records && (<NoContentFound title='No se encontraron pagos' text='No hay pagos a tu nombre hasta los momentos...' />)}
                 </Box>
             )}
         </>
     )
 }
-

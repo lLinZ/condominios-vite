@@ -1,11 +1,11 @@
 import Grid from '@mui/material/Grid'
-import { OptionWidget } from './';
+import { OptionWidget } from '.';
 import { Option } from '../../../interfaces';
 type Breakpoints = {
-    xs: number;
-    sm: number;
-    md: number;
-    lg: number;
+    xs?: number;
+    sm?: number;
+    md?: number;
+    lg?: number;
 }
 type Props = {
     options: Option[];
@@ -16,7 +16,7 @@ export const OptionsList = (props: Props) => {
     return (
         <Grid container display='flex' alignItems='center' justifyContent='space-between' spacing={1} sx={{ padding: 2 }}>
             {props.options.map((option) => (
-                <Grid item xs={breakpoints.xs} sm={breakpoints.sm} md={breakpoints.md} lg={breakpoints.lg} key={option.text}>
+                <Grid item {...breakpoints} key={option.text}>
                     <OptionWidget option={option} />
                 </Grid>
             ))}

@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { AuthContext } from '../../context/auth';
 import { Layout } from '../../components/ui';
-import { OptionsList } from '../../components/client/options';
+import { OptionsList } from '../../components/ui/options';
 import Box from '@mui/material/Box';
 import { TypographyCustom } from '../../components/custom';
 import MapsHomeWorkRounded from '@mui/icons-material/MapsHomeWorkRounded';

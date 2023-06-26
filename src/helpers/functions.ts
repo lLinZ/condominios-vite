@@ -1,6 +1,12 @@
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
 
+export function errorArrayLaravelTransformToString(errors: any[]) {
+    if (errors.length === 0) return false;
+    let errorString = '';
+    Object.values(errors).map((error: any) => errorString += `${error} <br/>`);
+    return errorString;
+}
 export const getFormatDistanceToNow = (date: Date) => {
     const fromNow = formatDistanceToNow(date, { locale: es });
     return `Creada hace ${fromNow}`;

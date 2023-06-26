@@ -25,7 +25,8 @@ export const UserMenu = () => {
 
     const logout = async () => {
         const result = await userLogout();
-        if (result.status) return router('/');
+        console.log({ result })
+        if (result.status) return window.location.href = '/';
     }
     return (
         <Box>
