@@ -30,7 +30,7 @@ export const ClientRoutes = () => {
         <Route path='/pagos' element={<Navigate to={'/'} />} />
         <Route path='/pagos/lista' element={<Navigate to={'/'} />} />
         <Route path='/pagos/registrar' element={<Navigate to={'/'} />} />
-        <Route path='/perfil' element={<Navigate to={'/'} />} />
+        {/* <Route path='/perfil' element={<Navigate to={'/'} />} /> */}
       </Routes>)
   )
 }

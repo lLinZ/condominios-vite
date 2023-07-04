@@ -3,6 +3,7 @@ import { AuthPage } from './pages';
 import { AdminRoutes, ClientRoutes } from './components/router';
 import { AuthContext } from './context/auth';
 import { useContext, useEffect } from 'react';
+import './styles/styles.css'
 
 function App() {
   const context = useContext(AuthContext);

@@ -12,6 +12,7 @@ import { AuthContext } from '../../../context/auth';
 type Props = {
     title: string;
     description: string;
+    backPath?: string;
 }
 
 export const DescripcionDeVista = (props: Props) => {
@@ -19,9 +20,10 @@ export const DescripcionDeVista = (props: Props) => {
     const router = useNavigate();
     const theme = useTheme();
     const { authState } = useContext(AuthContext)
+    const backpath = props.backPath ? props.backPath : -1;
     return (
         <Box sx={styles.nameContainer}>
-            <Button size='small' onClick={() => router('/dashboard')} variant="text" sx={{
+            <Button size='small' onClick={() => router(authState.role?.description === 'Cliente' ? '/dashboard' : '/admin/dashboard')} variant="text" sx={{
                 background: 'rgba(100,100,100,0.1)', textTransform: 'none', borderRadius: '10em', color: 'text.secondary', mb: 2, '&:hover': {
                     background: authState.color,
                     color: theme.palette.getContrastText(authState.color)
@@ -33,7 +35,7 @@ export const DescripcionDeVista = (props: Props) => {
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center', flexFlow: 'row nowrap' }}>
-                <IconButton onClick={() => router(-1)}>
+                <IconButton onClick={() => router(backpath)}>
                     <ArrowBackRounded />
                 </IconButton>
                 <TypographyCustom variant='h4' fontWeight={'bold'}>
