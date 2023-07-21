@@ -20,6 +20,8 @@ export interface IUnit {
     unit_type: IUnitType;
     building_id: number;
     building: IBuilding;
+    status_id: number;
+    status?: IStatus;
     created_at: string;
     updated_at: string;
 }

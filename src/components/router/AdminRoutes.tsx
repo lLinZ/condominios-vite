@@ -1,12 +1,13 @@
 import { useContext, useEffect } from 'react'
 import { Route, Routes } from 'react-router'
-import { Condominios, Divisas, Dashboard, Edificios, GastosComunes, GastosNoComunes, Proveedores, Unidades, Usuarios, Gastos } from '../../pages/admin'
+import { Condominios, Divisas, Dashboard, Edificios, GastosComunes, GastosNoComunes, Proveedores, Unidades, Usuarios, Gastos, Pagos } from '../../pages/admin'
 import { AuthContext } from '../../context/auth'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { RegistrarEdificio } from '../../pages/admin/edificios/RegistrarEdificio'
 import { MapearEdificio } from '../../pages/admin/edificios/MapearEdificio'
 import { TiposDeUnidad } from '../../pages/admin/edificios/TiposDeUnidad'
 import { Perfil } from '../../pages/client'
+import { CondominiumAdd } from '../../pages/admin/condominio'
 
 export const AdminRoutes = () => {
     const { authState } = useContext(AuthContext)
@@ -20,6 +21,7 @@ export const AdminRoutes = () => {
         authState.role?.description !== 'Cliente'
             ? (<Routes>
                 <Route path='/admin/condominios' element={<Condominios />} />
+                <Route path='/admin/condominios/agregar' element={<CondominiumAdd />} />
                 <Route path='/admin/dashboard' element={<Dashboard />} />
                 <Route path='/admin/divisas' element={<Divisas />} />
                 <Route path='/admin/edificios' element={<Edificios />} />
@@ -32,10 +34,12 @@ export const AdminRoutes = () => {
                 <Route path='/admin/usuarios' element={<Usuarios />} />
                 <Route path='/admin/unidades' element={<Unidades />} />
                 <Route path='/admin/proveedores' element={<Proveedores />} />
+                <Route path='/admin/pagos' element={<Pagos />} />
                 <Route path='/perfil' element={<Perfil />} />
             </Routes>)
             : (<Routes>
                 <Route path='/admin/condominios' element={<Navigate to={'/'} />} />
+                <Route path='/admin/condominios/agregar' element={<Navigate to={'/'} />} />
                 <Route path='/admin/dashboard' element={<Navigate to={'/'} />} />
                 <Route path='/admin/divisas' element={<Navigate to={'/'} />} />
                 <Route path='/admin/edificios' element={<Navigate to={'/'} />} />
@@ -47,6 +51,7 @@ export const AdminRoutes = () => {
                 <Route path='/admin/gastos/nocomunes' element={<Navigate to={'/'} />} />
                 <Route path='/admin/usuarios' element={<Navigate to={'/'} />} />
                 <Route path='/admin/unidades' element={<Navigate to={'/'} />} />
+                <Route path='/admin/pagos' element={<Navigate to={'/'} />} />
                 <Route path='/admin/proveedores' element={<Navigate to={'/'} />} />
             </Routes>)
     )

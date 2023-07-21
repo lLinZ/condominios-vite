@@ -1,21 +1,24 @@
+import { useContext, useEffect, useState } from 'react';
 
-import { Form, Formik, FormikState, FormikValues } from 'formik'
-import { ButtonCustom, SelectCustom, TypographyCustom } from '../../components/custom'
-import { Layout } from '../../components/ui'
-import { DescripcionDeVista } from '../../components/ui/content'
-import { IBuilding, IUnit } from '../../interfaces'
-import Grid from '@mui/material/Grid'
-import { baseUrl } from '../../common'
-import { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../context/auth'
-import MenuItem from '@mui/material/MenuItem'
-import SearchRounded from '@mui/icons-material/SearchRounded'
-import { errorArrayLaravelTransformToString } from '../../helpers/functions'
-import Swal from 'sweetalert2'
-import Box from '@mui/material/Box'
-import CircularProgress from '@mui/material/CircularProgress'
-import IconButton from '@mui/material/IconButton'
-import EditRounded from '@mui/icons-material/EditRounded'
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import MenuItem from '@mui/material/MenuItem';
+import SearchRounded from '@mui/icons-material/SearchRounded';
+import CircularProgress from '@mui/material/CircularProgress';
+
+import { Form, Formik, FormikState, FormikValues } from 'formik';
+
+import { UnitList } from '../../components/admin/units';
+import { ButtonCustom, SelectCustom } from '../../components/custom';
+import { Layout } from '../../components/ui';
+import { DescripcionDeVista } from '../../components/ui/content';
+
+import { baseUrl } from '../../common';
+import { AuthContext } from '../../context/auth';
+import { errorArrayLaravelTransformToString } from '../../helpers/functions';
+
+import Swal from 'sweetalert2';
+import { IBuilding, IUnit } from '../../interfaces';
 
 const initialValues = {
     building_id: 'default',
@@ -42,7 +45,6 @@ export const Unidades = () => {
                 case 200:
                     const { data } = await response.json();
                     setUnits(data)
-
                     break;
                 case 400:
                     const { errors } = await response.json();
@@ -138,19 +140,11 @@ export const Unidades = () => {
                     </Form>
                 )}
             </Formik>
-            {units && units.map((unit) => (
-                <Box key={unit.id} sx={{ borderRadius: 3, p: 2, mt: 2, boxShadow: '0 2px 8px rgba(100,100,100,0.1)' }}>
-                    <TypographyCustom variant={'subtitle2'}>{unit.name}</TypographyCustom>
-                    <TypographyCustom variant={'subtitle2'}>Tipo de unidad</TypographyCustom>
-                    <TypographyCustom variant={'h6'}>{unit.unit_type.description}</TypographyCustom>
-
-                    <TypographyCustom variant={'subtitle2'}>{unit.name}</TypographyCustom>
-                    <IconButton><EditRounded /></IconButton>
-                </Box>
-            ))}
+            {units && <UnitList units={units} />}
+            {!units && ('No hay unidades para mostrar')}
             {loading &&
                 <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2 }}>
-                    <CircularProgress />
+                    <CircularProgress sx={{ color: authState.color }} />
                 </Box>
             }
         </Layout>

@@ -4,6 +4,7 @@ import { lighten, darken, useTheme, InputLabel, Select, SelectProps, FormControl
 
 interface CustomSelectProps extends SelectProps {
     helpertext: string;
+    uppersx?: any;
 }
 export function SelectCustom(
     props: CustomSelectProps
@@ -28,8 +29,7 @@ export function SelectCustom(
             }
         }
     }
-
-    const selectSx = {
+    const baseStyles = {
         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
             borderColor: authState.color,
         },
@@ -40,8 +40,14 @@ export function SelectCustom(
             fontFamily: 'Noto Sans Warang Citi',
         },
     }
+    const selectSx = rest.sx
+        ? {
+            ...baseStyles,
+            ...rest.sx,
+        }
+        : baseStyles
     return (
-        <FormControl fullWidth error={rest.error}>
+        <FormControl fullWidth error={rest.error} sx={...rest.uppersx}>
             <InputLabel id={rest.labelId} sx={{
                 fontFamily: 'Noto Sans Warang Citi',
                 '&.Mui-focused': {

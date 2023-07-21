@@ -8,3 +8,4 @@ export * from './Edificios.tsx';
 export * from './Unidades.tsx';
 export * from './Usuarios.tsx';
 export * from './Proveedores.tsx';
+export * from './Pagos.tsx';

@@ -137,7 +137,7 @@ export const TiposDeUnidad = () => {
                     resetForm();
                     break;
                 default:
-                    const { message: messageError, errors } = await response.json();
+                    const { errors } = await response.json();
 
                     const errorString = errorArrayLaravelTransformToString(errors);
                     Swal.fire({
