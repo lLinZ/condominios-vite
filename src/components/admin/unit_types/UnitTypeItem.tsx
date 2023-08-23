@@ -129,9 +129,9 @@ export const UnitTypeItem = ({ unitType, building }: Props) => {
     return (
         <Box key={UnitType.id} sx={styles.main}>
             <Box sx={styles.wrapper}>
-                <Box sx={{ display: 'flex', flexFlow: 'row wrap' }}>
+                <Box sx={{ display: 'flex', flexFlow: 'row wrap', alignItems: 'center' }}>
                     <RoomPreferencesRounded sx={{ color: blue[400] }} />
-                    <TypographyCustom variant="subtitle1" fontWeight={'bold'}>{UnitType.description}</TypographyCustom>
+                    <TypographyCustom variant="h6" fontWeight={'bold'}>{UnitType.description}</TypographyCustom>
                 </Box>
                 <IconButton color={'warning'} onClick={toggleEdit}>
                     {edit ? <EditOffRounded /> : <EditRounded />}
@@ -174,8 +174,8 @@ export const UnitTypeItem = ({ unitType, building }: Props) => {
                 </Grid>
             </Grid>) : (
                 <>
-                    <TypographyCustom variant='h6' color='text.secondary' fontmode={2}>Metraje {UnitType.size}</TypographyCustom>
-                    <TypographyCustom variant='h6' color='text.secondary' fontmode={2}>Alicuota {UnitType.aliquot}</TypographyCustom>
+                    <TypographyCustom variant='subtitle2' color='text.secondary' fontmode={2}>Metraje {UnitType.size}</TypographyCustom>
+                    <TypographyCustom variant='subtitle2' color='text.secondary' fontmode={2}>Alicuota {UnitType.aliquot}</TypographyCustom>
                 </>)}
         </Box>
     )

@@ -179,7 +179,7 @@ export const UnitItem = ({ unit }: Props) => {
     }
 
     return (
-        <Box sx={{ borderRadius: 3, p: 2, mt: 2, boxShadow: '0 2px 8px rgba(100,100,100,0.1)' }}>
+        <Box sx={{ borderRadius: 3, p: 2, mt: 2, boxShadow: '0 2px 8px rgba(100,100,100,0.1)', background: '#FFF' }}>
             <Box>
                 <Chip size='small' color={unitState.status?.description === 'Activo' ? 'primary' : 'default'} label={unitState.status?.description} sx={{ width: 'auto' }} />
             </Box>

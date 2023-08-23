@@ -213,7 +213,7 @@ export const Condominios = () => {
                 </Box>
             )}
             {!loading && condominia && condominia.map((condo) => (
-                <Box key={condo.id} sx={{ p: 2, boxShadow: '0 2px 8px rgba(100,100,100,0.1)', borderRadius:3 }}>
+                <Box key={condo.id} sx={{ p: 2, boxShadow: '0 2px 8px rgba(100,100,100,0.1)', borderRadius: 3, background: '#FFF', mb: 1 }}>
                     <TypographyCustom variant='h6' fontWeight='bold' color='text.primary'>{condo.description}</TypographyCustom>
                     <TypographyCustom variant='body1' color='text.secondary'>{condo.building.name}</TypographyCustom>
                     <TypographyCustom variant='subtitle2' color='text.secondary'>{`${condo.month} - ${condo.year}`}</TypographyCustom>

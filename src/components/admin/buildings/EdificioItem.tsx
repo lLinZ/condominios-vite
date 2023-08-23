@@ -144,6 +144,8 @@ const styles = {
         display: 'flex',
         alignItems: 'start',
         flexFlow: 'column wrap',
-        boxShadow: '0 2px 8px rgba(100,100,100,0.1)'
+        boxShadow: '0 2px 8px rgba(100,100,100,0.1)',
+        background: '#FFF',
+        borderRadius: 3
     }
 } 

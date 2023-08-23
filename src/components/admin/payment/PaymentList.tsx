@@ -8,7 +8,7 @@ import { PaymentItem } from "."
 import { baseUrl } from "../../../common"
 import { TypographyCustom } from "../../custom"
 import { AuthContext } from "../../../context/auth"
-import { BusquedaYResultado } from "../../ui/content"
+import { BusquedaYResultado, NoContentFound } from "../../ui/content"
 import { errorArrayLaravelTransformToString } from "../../../helpers/functions"
 import { IPayment } from "../../../interfaces"
 
@@ -77,7 +77,8 @@ export const PaymentList = () => {
         getPayments();
     }, [])
     return (<>
-        {payments && (<BusquedaYResultado records={payments} setRecords={setPayments} title='pagos' />)}
+        {!loading && payments && payments.length === 0 && (<NoContentFound title={"Oops!"} text={"No se encontraron pagos..."} />)}
+        {payments && payments.length > 0 && (<BusquedaYResultado records={payments} setRecords={setPayments} title='pagos' />)}
         {payments
             ? payments.map((payment) => (<PaymentItem key={payment.id} payment={payment} />))
             : (<Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
