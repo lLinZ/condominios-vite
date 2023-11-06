@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 
 import EditRounded from "@mui/icons-material/EditRounded";
-import { Box, Chip, IconButton } from "@mui/material";
+import { Box, Chip, Divider, IconButton, lighten, darken, Grid } from "@mui/material";
 
 import Swal from "sweetalert2";
 
@@ -11,11 +11,20 @@ import { errorArrayLaravelTransformToString } from "../../../helpers/functions";
 import { IUnit } from "../../../interfaces";
 import { TypographyCustom } from "../../custom";
 import { OwnerDialog, SelectedUnitType, SelectedUser, UnitTypeDialog } from ".";
+import { green, orange } from "@mui/material/colors";
 
+type ControlProps = {
+    unitsState: IUnit[];
+    setUnitsState: React.Dispatch<React.SetStateAction<IUnit[]>>;
+    ids: number[];
+    setIds: React.Dispatch<React.SetStateAction<number[]>>;
+    saveChanges: () => Promise<void>
+}
 interface Props {
     unit: IUnit;
+    controlProps: ControlProps;
 }
-export const UnitItem = ({ unit }: Props) => {
+export const UnitItem = ({ unit, controlProps }: Props) => {
     const [unitState, setUnitState] = useState<IUnit>(unit);
 
     const { authState } = useContext(AuthContext);
@@ -180,18 +189,32 @@ export const UnitItem = ({ unit }: Props) => {
 
     return (
         <Box sx={{ borderRadius: 3, p: 2, mt: 2, boxShadow: '0 2px 8px rgba(100,100,100,0.1)', background: '#FFF' }}>
-            <Box>
-                <Chip size='small' color={unitState.status?.description === 'Activo' ? 'primary' : 'default'} label={unitState.status?.description} sx={{ width: 'auto' }} />
-            </Box>
-            <Box sx={{ display: 'flex', flexFlow: 'column wrap' }}>
-                <TypographyCustom variant={'h6'} fontWeight='bold'>{unitState.name}</TypographyCustom>
-                <TypographyCustom variant={'subtitle1'} fontWeight={'bold'} color="text.disabled">Tipo de unidad</TypographyCustom>
-                <TypographyCustom variant={'subtitle2'} fontWeight={'bold'} color={unitState.unit_type ? 'text.primary' : 'text.secondary'}>{unitState.unit_type ? unitState.unit_type.description : 'No hay tipo de unidad asignado'}</TypographyCustom>
-                <UnitTypeDialog asignUnitType={asignUnitType} unit={unitState} />
-                <TypographyCustom variant={'subtitle1'} fontWeight={'bold'} color="text.disabled">Propietario</TypographyCustom>
-                <TypographyCustom variant={'subtitle2'} fontWeight={'bold'} color={unitState.user ? 'text.primary' : 'text.secondary'}>{unitState.user ? unitState.user.nombre : 'No hay propietario asignado'}</TypographyCustom>
-                <OwnerDialog asignOwner={asignOwner} unit={unitState} />
-            </Box>
+
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={12} md={4}>
+                    <Box>
+                        <TypographyCustom variant={'h6'} fontWeight='bold'>{unitState.name}</TypographyCustom>
+                        <Box sx={{ display: 'flex' }}>
+                            <TypographyCustom color='text.secondary'>Status </TypographyCustom>
+                            <Chip size='small' label={unitState.status?.description} sx={{ width: 'auto', ml: 1, background: unitState.status?.description === 'Activo' ? lighten(green[500], 0.5) : lighten(orange[500], 0.5), color: unitState.status?.description === 'Activo' ? darken(green[500], 0.3) : darken(orange[500], 0.3), fontWeight: 'bold' }} />
+                        </Box>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4}>
+                    <Box sx={{ display: 'flex', alignItems: 'start', flexFlow: 'column', ml: { xs: 0, sm: 4 } }}>
+                        <TypographyCustom variant={'subtitle1'} fontWeight={'bold'} color="text.primary">Tipo de unidad</TypographyCustom>
+                        <TypographyCustom variant={'subtitle2'} fontWeight={'bold'} color={unitState.unit_type ? 'text.secondary' : 'text.disabled'}>{unitState.unit_type ? unitState.unit_type.description : 'No hay tipo de unidad asignado'}</TypographyCustom>
+                        <UnitTypeDialog asignUnitType={asignUnitType} unit={unitState} />
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4}>
+                    <Box sx={{ display: 'flex', alignItems: 'start', flexFlow: 'column', ml: { xs: 0, sm: 4 } }}>
+                        <TypographyCustom variant={'subtitle1'} fontWeight={'bold'} color="text.primary">Propietario</TypographyCustom>
+                        <TypographyCustom variant={'subtitle2'} fontWeight={'bold'} color={unitState.user ? 'text.secondary' : 'text.disabled'}>{unitState.user ? unitState.user.nombre : 'No hay propietario asignado'}</TypographyCustom>
+                        <OwnerDialog asignOwner={asignOwner} unit={unitState} />
+                    </Box>
+                </Grid>
+            </Grid>
         </Box>
     )
 }

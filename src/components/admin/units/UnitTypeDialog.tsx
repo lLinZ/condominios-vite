@@ -1,5 +1,5 @@
 import { AddCircleRounded, CloseRounded } from "@mui/icons-material";
-import { Button, Dialog, Toolbar, IconButton, CircularProgress } from "@mui/material";
+import { Button, Dialog, Toolbar, IconButton, CircularProgress, lighten, darken } from "@mui/material";
 import Box from "@mui/material/Box";
 import { grey } from "@mui/material/colors";
 import { useState, useContext } from "react";
@@ -108,7 +108,7 @@ export const UnitTypeDialog = ({ asignUnitType, unit }: PropsUnitTypeDialog) => 
     }
     return (
         <Box>
-            <Button sx={{ textTransform: 'none', borderRadius: 25 }} variant='text' color='info' endIcon={<AddCircleRounded />} onClick={handleOpen}>Asignar tipo de unidad</Button>
+            <Button sx={{ textTransform: 'none', background: lighten(authState.color, 0.5), color: darken(authState.color, 0.3) }} variant='text' endIcon={<AddCircleRounded />} onClick={handleOpen}>Asignar</Button>
             <Dialog fullScreen open={open} onClose={handleClose}>
                 <Toolbar sx={{ background: grey[900] }}>
                     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

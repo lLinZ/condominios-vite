@@ -1,5 +1,5 @@
 import { AddCircleRounded, CloseRounded } from "@mui/icons-material";
-import { Box, Button, Dialog, Toolbar, IconButton, CircularProgress } from "@mui/material";
+import { Box, Button, Dialog, Toolbar, IconButton, CircularProgress, lighten, darken } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useContext, useState } from "react";
 import { IUnit, IUser } from "../../../interfaces";
@@ -107,7 +107,7 @@ export const OwnerDialog = ({ asignOwner }: PropsOwnerDialog) => {
     }
     return (
         <Box>
-            <Button sx={{ textTransform: 'none', borderRadius: 25 }} variant='text' color='info' endIcon={<AddCircleRounded />} onClick={handleOpen}>Asignar propietario</Button>
+            <Button sx={{ textTransform: 'none', background: lighten(authState.color, 0.5), color: darken(authState.color, 0.3) }} variant='text' endIcon={<AddCircleRounded />} onClick={handleOpen}>Asignar</Button>
             <Dialog fullScreen open={open} onClose={handleClose}>
                 <Toolbar sx={{ background: grey[900] }}>
                     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

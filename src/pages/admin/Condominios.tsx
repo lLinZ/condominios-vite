@@ -7,7 +7,7 @@ import green from '@mui/material/colors/green';
 import blue from '@mui/material/colors/blue';
 
 import { Layout } from '../../components/ui'
-import { DescripcionDeVista } from '../../components/ui/content'
+import { DescripcionDeVista, NoContentFound } from '../../components/ui/content'
 import { OptionsList } from '../../components/ui/options'
 import { ICondominium, Option } from '../../interfaces'
 
@@ -60,7 +60,7 @@ export const Condominios = () => {
     const closeCondominium = async (id: number) => {
         const url = `${baseUrl}/condominium/close/${id}`;
         const options = {
-            method: "PUT",
+            method: "GET",
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${authState.token}`,
@@ -128,7 +128,7 @@ export const Condominios = () => {
     const cancelCondominium = async (id: number) => {
         const url = `${baseUrl}/condominium/cancel/${id}`;
         const options = {
-            method: "PUT",
+            method: "GET",
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${authState.token}`,
@@ -206,11 +206,8 @@ export const Condominios = () => {
                     <CircularProgress sx={{ color: authState.color }} />
                 </Box>
             )}
-            {!loading && !condominia && (
-                <Box sx={{ width: '100%', mt: 2, mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', flexFlow: 'column wrap' }}>
-                    <img src='/no-content.png' width='250' height='250' />
-                    <TypographyCustom variant='h6' color='text.disabled'>No se encontraron registros</TypographyCustom>
-                </Box>
+            {!loading && condominia?.length === 0 && (
+                <NoContentFound title={'Oops...'} text={'No se encontraron registros'} />
             )}
             {!loading && condominia && condominia.map((condo) => (
                 <Box key={condo.id} sx={{ p: 2, boxShadow: '0 2px 8px rgba(100,100,100,0.1)', borderRadius: 3, background: '#FFF', mb: 1 }}>

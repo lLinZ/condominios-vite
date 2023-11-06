@@ -75,7 +75,7 @@ export const AuthPage = () => {
                                 <TextFieldCustom fullWidth name='password' type='password' label="Contraseña" onChange={handleChange} />
                             </Grid>
                             <Grid item xs={12} md={12} sx={styles.item}>
-                                <ButtonCustom fullWidth disableElevation disabled={loading} type='submit' color='primary' variant='contained'>Iniciar sesion</ButtonCustom>
+                                <ButtonCustom fullWidth disableElevation disabled={loading} type='submit'>Iniciar sesion</ButtonCustom>
                             </Grid>
                         </Grid>
                     </Form >

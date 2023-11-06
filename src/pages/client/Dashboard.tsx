@@ -19,6 +19,7 @@ export const Dashboard = () => {
         { text: 'Documentos', icon: <ArticleRounded />, color: orange[300], path: '/documentos' },
         { text: 'Reportes', icon: <PictureAsPdfRounded />, color: red[400], path: '/reportes' },
     ]
+
     return (
         <Layout>
 
@@ -35,7 +36,9 @@ export const Dashboard = () => {
             </Box>
             <OptionsList options={clientOptions} />
             <Box sx={styles.contentContainer}>
+                <Box>
 
+                </Box>
             </Box>
         </Layout>
     )

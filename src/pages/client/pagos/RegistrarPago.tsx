@@ -22,14 +22,14 @@ import Swal from 'sweetalert2';
 import { errorArrayLaravelTransformToString } from '../../../helpers/functions';
 
 const initialValues = {
-    monto: 0,
+    monto: '',
     tipo_de_moneda: 'default',
     tipo_de_pago: 'default',
     descripcion: '',
     unit_id: 'default',
 }
 type FormValues = {
-    monto: number;
+    monto: string;
     unit_id: string;
     tipo_de_moneda: string;
     tipo_de_pago: string;
@@ -37,7 +37,7 @@ type FormValues = {
 }
 
 const validationSchema = Yup.object({
-    monto: Yup.string().matches(/^[\,0-9\.]+$/, 'Sólo se permiten números').required('Este campo es obligatorio').min(2, 'Minimo 2 caracteres'),
+    monto: Yup.string().required('Este campo es obligatorio').min(2, 'Minimo 2 caracteres'),
     tipo_de_moneda: Yup.string().matches(/(Dolar)|(Bolivares)/g, 'Debe seleccionar una opcion valida').required('Este campo es obligatorio'),
     tipo_de_pago: Yup.string().matches(/(Transferencia)|(Efectivo)/g, 'Debe seleccionar una opcion valida').required('Este campo es obligatorio'),
     descripcion: Yup.string().required('Este campo es obligatorio'),
@@ -84,13 +84,12 @@ export const RegistrarPago = () => {
     const handleSubmitForm = async (values: FormValues, resetForm: (nextState?: any) => any) => {
         const url = `${baseUrl}/payment`;
         const formData = new FormData();
-        formData.append('amount', Number(String(values.monto).replace(/,/g, '')).toFixed(2));
+        formData.append('amount', values.monto.replace(/\,/g, ''));
         formData.append('unit_id', values.unit_id);
         formData.append('currency', values.tipo_de_moneda);
         formData.append('payment_type', values.tipo_de_pago);
         formData.append('description', values.descripcion);
         formData.append('image', image ? image : '');
-
         const options = {
             method: 'POST',
             headers: {
@@ -186,7 +185,7 @@ export const RegistrarPago = () => {
                                     value={values.tipo_de_pago}
                                 >
                                     <MenuItem value={'default'} disabled>Seleccione un tipo de pago</MenuItem>
-                                    <MenuItem value={'Transferencias'}>Transferencia</MenuItem>
+                                    <MenuItem value={'Transferencia'}>Transferencia</MenuItem>
                                     <MenuItem value={'Efectivo'}>Efectivo</MenuItem>
                                 </SelectCustom>
                             </Grid>
@@ -200,6 +199,7 @@ export const RegistrarPago = () => {
                                     thousandSeparator={true}
                                     value={values.monto}
                                     decimalScale={2}
+                                    fixedDecimalScale={true}
                                     error={errors.monto && touched.monto ? true : false}
                                     helperText={errors.monto && touched.monto ? errors.monto : ''}
                                 />

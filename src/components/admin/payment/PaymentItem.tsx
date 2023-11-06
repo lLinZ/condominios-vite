@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Box, Chip, IconButton } from "@mui/material";
+import { darken, lighten, Box, Divider, Chip, Grid, IconButton } from "@mui/material";
 
 import CheckCircleRounded from "@mui/icons-material/CheckCircleRounded";
 import CancelRounded from "@mui/icons-material/CancelRounded";
@@ -9,9 +9,10 @@ import Swal from "sweetalert2";
 import { baseUrl } from "../../../common";
 import { AuthContext } from "../../../context/auth";
 import { ImageDialog } from "../../client/pagos";
-import { TypographyCustom } from "../../custom";
+import { ButtonCustom, TypographyCustom } from "../../custom";
 import { errorArrayLaravelTransformToString, getFormatDistanceToNow } from "../../../helpers/functions";
 import { IPayment } from "../../../interfaces";
+import { green, orange, red } from "@mui/material/colors";
 
 interface Props {
     payment: IPayment;
@@ -165,27 +166,43 @@ export const PaymentItem = ({ payment }: Props) => {
         }
     }
     return (paymentState ? (
-        <Box sx={{ width: '100%', mb: 1, mt: 1, boxShadow: '0 2px 8px rgba(100,100,100,0.1)', p: 2 }}>
-            <Chip size='small' color={paymentState.status?.description === 'Pendiente' ? 'warning' : 'error'} label={paymentState.status?.description ? paymentState.status?.description : ''} />
-            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Box>
+        <Box sx={{ width: '100%', mb: 1, mt: 1, boxShadow: '0 2px 8px rgba(100,100,100,0.1)', p: 2, borderRadius: 3 }}>
+            <Grid container spacing={1}>
+                <Grid item xs={12}>
                     <TypographyCustom variant='h6' fontWeight='bold'>{paymentState.description}</TypographyCustom>
-                    <TypographyCustom variant='subtitle1' fontWeight='bold' color='text.secondary'>Monto</TypographyCustom>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <TypographyCustom color='text.secondary'>Status </TypographyCustom>
+                        <Chip size='small' sx={{ ml: 1, background: lighten(paymentState.status?.description === 'Pendiente' ? orange[500] : red[500], 0.3), fontWeight: 'bold', color: darken(paymentState.status?.description === 'Pendiente' ? orange[500] : red[500], 0.3) }} label={paymentState.status?.description ? paymentState.status?.description : ''} />
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                    <TypographyCustom variant='subtitle1' fontWeight='bold' color='text.primary'>Monto</TypographyCustom>
                     <TypographyCustom variant='subtitle2' color='text.secondary'>{paymentState.amount}</TypographyCustom>
-                    <TypographyCustom variant='subtitle1' fontWeight='bold' color='text.secondary'>Tipo</TypographyCustom>
+                    <TypographyCustom variant='subtitle1' fontWeight='bold' color='text.primary'>Moneda</TypographyCustom>
+                    <TypographyCustom variant='subtitle2' color='text.secondary'>{paymentState.currency}</TypographyCustom>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                    <TypographyCustom variant='subtitle1' fontWeight='bold' color='text.primary'>Tipo de pago</TypographyCustom>
                     <TypographyCustom variant='subtitle2' color='text.secondary'>{paymentState.payment_type}</TypographyCustom>
-                    <TypographyCustom variant='subtitle2' color='text.disabled' fontmode={2}>{getFormatDistanceToNow(new Date(paymentState.created_at))}</TypographyCustom>
-                </Box>
-                <ImageDialog image={paymentState.image ? paymentState.image : ''} />
-            </Box>
-            <Box sx={{ display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-start', alignItems: 'center' }}>
-                <IconButton color='success' onClick={approvePayment}>
-                    <CheckCircleRounded />
-                </IconButton>
-                <IconButton color='error' onClick={declinePayment}>
-                    <CancelRounded />
-                </IconButton>
-            </Box>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                    <TypographyCustom variant='subtitle1' fontWeight='bold' color='text.primary'>Fecha</TypographyCustom>
+                    <TypographyCustom variant='subtitle2' color='text.secondary'>{getFormatDistanceToNow(new Date(paymentState.created_at))}</TypographyCustom>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                    <TypographyCustom variant='subtitle1' fontWeight='bold' color='text.primary'>Capture</TypographyCustom>
+                    <ImageDialog image={paymentState.image ? paymentState.image : ''} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Divider sx={{ mt: 2 }} />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4}>
+                    <Box sx={{ display: 'flex', flexFlow: 'row nowrap', justifyContent: 'space-around' }}>
+                        <ButtonCustom size='small' endIcon={<CheckCircleRounded />} customcolor={green[500]} nofull>Aprobar</ButtonCustom>
+                        <ButtonCustom size='small' endIcon={<CancelRounded />} customcolor={red[500]} nofull>Rechazar</ButtonCustom>
+                    </Box>
+                </Grid>
+            </Grid>
         </Box>) : <></>
     )
 }

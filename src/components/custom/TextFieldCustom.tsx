@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { AuthContext } from '../../context/auth';
 import { red } from '@mui/material/colors';
+import { lighten, darken } from '@mui/material';
 
 export function TextFieldCustom(
     props: TextFieldProps
@@ -18,14 +19,14 @@ export function TextFieldCustom(
             fontFamily: 'Noto Sans Warang Citi',
         },
         '& label.Mui-focused': {
-            color: authState.color,
+            color: darken(authState.color, 0.3),
         },
         '& label': {
             fontFamily: 'Noto Sans Warang Citi'
         },
         '& .MuiOutlinedInput-root': {
             '&.Mui-focused fieldset': {
-                borderColor: authState.color,
+                borderColor: lighten(authState.color, 0.3),
             },
         },
 

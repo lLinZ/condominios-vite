@@ -31,7 +31,7 @@ export function SelectCustom(
     }
     const baseStyles = {
         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: authState.color,
+            borderColor: lighten(authState.color, 0.3),
         },
         '& fieldset': {
             borderRadius: '10em',
